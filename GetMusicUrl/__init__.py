@@ -24,7 +24,6 @@ class Music:
     @detail_params.setter
     def detail_params(self, _id: str):
         self._detail_params['id'] = _id
-        # self._detail_params['c'][0]['id'] = _id
         self._detail_params['c'] = '[{"id":"' + _id + '"}]'
 
 
@@ -36,15 +35,15 @@ class Music:
     def url_params(self, _id: str):
         self._url_params['ids'] = '[' + _id + ']'
 
-    def get_random_a(self):
+    def _get_random_a(self):
         """生成随机的字符串，这里不按照原实现做"""
         return configs['random_a']  # 直接返回定值
 
-    def get_rsa(self):
+    def _get_rsa(self):
         """rsa加密"""
         return configs['rsa_random_a']
 
-    def get_requests_data(self, data, key):
+    def _get_requests_data(self, data, key):
         """生成一个requests所要求的params和encSecKey参数
 
         首先获取一个随机字符串s
@@ -54,24 +53,23 @@ class Music:
 
         以上的key 都是定值
         """
-        s = self.get_random_a()
-        # data = '{"id":"553755659","c":"[{"id":"553755659"}]","csrf_token":""}'
+        s = self._get_random_a()
         h = my_encrypt(data, key)
         encText = my_encrypt(h, s)
-        encSeckey = self.get_rsa()
+        encSeckey = self._get_rsa()
         return encText, encSeckey
 
     def get_music_url(self):
-        encText, encSecKey = self.get_requests_data(self.url_params, configs['AES']['first_key'])
+        encText, encSecKey = self._get_requests_data(self.url_params, configs['AES']['first_key'])
         self.data['params'] = encText
         self.data['encSecKey'] = encSecKey
         r = requests.post(configs['url_for_url'], headers=self.headers, data=self.data)
-        return r.text
+        return r.content.decode('utf8')
 
     def get_music_detail(self):
-        encText, encSecKey = self.get_requests_data(self.detail_params, configs['AES']['first_key'])
+        encText, encSecKey = self._get_requests_data(self.detail_params, configs['AES']['first_key'])
         self.data['params'] = encText
         self.data['encSecKey'] = encSecKey
         r = requests.post(configs['url_for_detail'], headers=self.headers, data=self.data)
-        return r.text
+        return r.content.decode('utf8')
 
