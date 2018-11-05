@@ -17,7 +17,7 @@ class MyWindow(QtWidgets.QMainWindow):
         super(MyWindow, self).__init__(parent)
         # 设置窗口标记（无边框|任务栏右键菜单）
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
-        self.setWindowTitle('心悦-music')
+        self.setWindowTitle(configs['window_title'])
         self.w_size = configs['window_size']  # 窗口大小
         self.setFixedWidth(self.w_size[0])  # 宽度固定
         self.setMinimumHeight(self.w_size[1])
