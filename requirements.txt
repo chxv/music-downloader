@@ -5,4 +5,4 @@ pycryptodome==3.7.0
 PyQt5==5.11.3
 PyQt5-sip==4.19.13
 requests==2.20.0
-urllib3==1.24.1
+urllib3==1.24.2
